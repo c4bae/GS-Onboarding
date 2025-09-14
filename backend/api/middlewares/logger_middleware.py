@@ -3,7 +3,7 @@ from typing import Any
 from fastapi import Request, Response
 from starlette.middleware.base import BaseHTTPMiddleware
 import time
-import datetime
+from datetime import datetime
 from loguru import logger
 from backend.utils.logging import logger_close, logger_setup, logger_setup_file
 
@@ -13,7 +13,7 @@ class LoggerMiddleware(BaseHTTPMiddleware):
         self, request: Request, call_next: Callable[[Request], Any]
     ) -> Response:
         start_time = time.perf_counter()
-        date_time = datetime.time()
+        date_time = datetime.now()
         request_params = request.query_params
 
         logger_setup()
