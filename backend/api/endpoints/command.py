@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel import Session, select
 
 from backend.api.models.request_model import CommandRequest
@@ -23,23 +23,27 @@ def get_commands(db: Session = Depends(get_db)):
 
 
 @command_router.post("/", response_model=CommandSingleResponse)
-def create_command(payload: CommandRequest):
-    """
-    Creates an item with the given payload in the database and returns this payload after pulling it from the database 
+def create_command(payload: CommandRequest, db: Session = Depends(get_db)):
+    command = Command(command_type=payload.command_type, params=payload.params)
+    db.add(command)
+    db.commit()
 
-    :param payload: The data used to create an item
-    :return: returns a json object with field of "data" under which there is the payload now pulled from the database 
-    """
-    # TODO:(Member) Implement this endpoint
-                      
+    added_payload = select(Command).order_by(Command.id.desc())
+    result = db.exec(added_payload).first()
 
+    return {"data": result}
 
-@command_router.delete("/{id}", response_model=CommandListResponse)
-def delete_command(id: int):
-    """
-    Deletes the item with the given id if it exists. Otherwise raises a 404 error.
+@command_router.delete("/{id}", response_model=CommandListResponse) # if a response_model is provided you must return it in the right format or compiler gets angry
+def delete_command(id: int, db: Session = Depends(get_db)):
+    command_to_delete = select(Command).where(Command.id == id)
+    results = db.exec(command_to_delete)
+    command = results.first()
+    if command:
+        db.delete(command)
+        db.commit()
 
-    :param id: The id of the item to delete
-    :return: returns the list of commands after deleting the item
-    """
-    # TODO:(Member) Implement this endpoint
+        results = db.exec(select(Command))
+        commands = results.all()
+        return CommandListResponse(data=commands)
+    else:
+        raise HTTPException(status_code=404)

@@ -25,5 +25,5 @@ export interface CommandSingleResponse {
 }
 
 export interface CommandListResponse {
-  data: CommandResponse[]
+  data: CommandResponse[] // indicates that the data property contains a list of objects that must conform to the CommandResponse interface and property types
 }

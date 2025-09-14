@@ -1,0 +1,46 @@
+INFO:uvicorn.error:Started server process [99502]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Shutting down
+INFO:uvicorn.error:Waiting for application shutdown.
+INFO:uvicorn.error:Application shutdown complete.
+INFO:uvicorn.error:Finished server process [99502]
+ERROR:backend.api.middlewares.logger_middleware:test
+INFO:uvicorn.error:Started server process [99628]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Shutting down
+INFO:uvicorn.error:Waiting for application shutdown.
+INFO:uvicorn.error:Application shutdown complete.
+INFO:uvicorn.error:Finished server process [99628]
+ERROR:backend.api.middlewares.logger_middleware:test
+INFO:uvicorn.error:Started server process [99635]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Shutting down
+INFO:uvicorn.error:Waiting for application shutdown.
+INFO:uvicorn.error:Application shutdown complete.
+INFO:uvicorn.error:Finished server process [99635]
+INFO:uvicorn.error:Started server process [99650]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Shutting down
+INFO:uvicorn.error:Waiting for application shutdown.
+INFO:uvicorn.error:Application shutdown complete.
+INFO:uvicorn.error:Finished server process [99650]
+ERROR:backend.api.middlewares.logger_middleware:test
+INFO:uvicorn.error:Started server process [99662]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Shutting down
+INFO:uvicorn.error:Waiting for application shutdown.
+INFO:uvicorn.error:Application shutdown complete.
+INFO:uvicorn.error:Finished server process [99662]
+2025-09-12 16:52:58,452 test
+2025-09-12 16:52:58,454 Started server process [99916]
+2025-09-12 16:52:58,454 Waiting for application startup.
+2025-09-12 16:52:58,475 Application startup complete.
+2025-09-12 16:53:18,719 Shutting down
+2025-09-12 16:53:18,822 Waiting for application shutdown.
+2025-09-12 16:53:18,825 Application shutdown complete.
+2025-09-12 16:53:18,826 Finished server process [99916]

@@ -1,5 +1,6 @@
 import { CommandResponse } from "../data/response"
 import CommandRow from "./row"
+import { deleteCommands } from "./command_api"
 
 interface CommandTableProp {
   commands: CommandResponse[],
@@ -8,13 +9,12 @@ interface CommandTableProp {
 
 const CommandTable = ({
   commands,
-  setCommands
+  setCommands // props passed in
 }: CommandTableProp) => {
 
   const handleDelete = (id: number) => {
     return async () => {
-      // TODO: (Member) You will need to create a function in `command_api.ts` so you can delete a command.
-      const data = await deleteCommand(id)
+      const data = await deleteCommands(id)
       setCommands(data.data)
     }
   }

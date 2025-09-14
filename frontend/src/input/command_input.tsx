@@ -1,6 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { CommandResponse, MainCommandResponse } from "../data/response"
+import { getMainCommands } from "./input_api";
+import { API_URL } from "../environment";
+import { CommandRequest } from "../data/request";
 import "./command_input.css"
+import axios from "axios";
+
 
 interface CommandInputProp {
   setCommands: React.Dispatch<React.SetStateAction<CommandResponse[]>>
@@ -9,9 +14,13 @@ interface CommandInputProp {
 const CommandInput = ({ setCommands }: CommandInputProp) => {
   const [selectedCommand, setSelectedCommand] = useState<MainCommandResponse | null>(null);
   const [parameters, setParameters] = useState<{ [key: string]: string }>({});
-  // TODO: (Member) Setup anymore states if necessary
+  const [mainCommands, setMainCommands] = useState<MainCommandResponse[] | null>(null);
 
-  // TODO: (Member) Fetch MainCommands in a useEffect
+  useEffect(() => {
+      getMainCommands().then(data => {
+        setMainCommands(data.data)
+    })
+  }, [])
 
   const handleParameterChange = (param: string, value: string): void => {
     setParameters((prev) => ({
@@ -21,7 +30,31 @@ const CommandInput = ({ setCommands }: CommandInputProp) => {
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
-    // TODO:(Member) Submit to your post endpoint 
+    if(!selectedCommand) {
+      return
+    }
+
+    try {
+      const command: CommandRequest = {
+        command_type: selectedCommand.id,
+        params: selectedCommand.params,
+    };
+      await axios.post(`${API_URL}/commands/`, command);
+      console.log('Command created successfully');
+    }
+    catch(e) {
+      console.error(e)
+      throw e
+    }
+
+    // returns a response object, so destructure to get the desired data
+    const { data } = await axios.get<CommandResponse>(`${API_URL}/commands/`)
+    // setCommands accepts CommandResponse[]
+    setCommands(commands => [...commands, data])
+  }
+
+  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedCommand(mainCommands?.find((command) => command.name === e.target.value) || null); 
   }
 
   return (
@@ -30,11 +63,11 @@ const CommandInput = ({ setCommands }: CommandInputProp) => {
         <div className="spreader">
           <div>
             <label>Command Type: </label>
-            <select>{/* TODO: (Member) Display the list of commands based on the get commands request.
-                        It should update the `selectedCommand` field when selecting one.*/}
-              <option value={"1"}>Command 1</option>
-              <option value={"2"}>Command 2</option>
-              <option value={"3"}>Command 3</option>
+            <select onChange={handleChange}>
+                {!mainCommands ? <option>Loading commands...</option> : mainCommands.map((command: MainCommandResponse) => {
+                  return <option key={command.id}>{command.name}</option>
+                })}
+
             </select>
           </div>
           {selectedCommand?.params?.split(",").map((param) => (
